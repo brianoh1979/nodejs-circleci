@@ -18,7 +18,7 @@ auto_auth {
 
 template {
   contents = <<EOF
-    {{ with secret "secret2/foo" }}
+    {{ with secret "secret2" }}
     export DOCKER_LOGIN={{ .Data.usr }}
     export DOCKER_PWD={{ .Data.pwd }}
     {{ end }}
