@@ -18,7 +18,7 @@ auto_auth {
 
 template {
   contents = <<EOF
-    {{ with secret "secrets/secret2" }}
+    {{ with secret "nodejs-circleci/pipeline/dockerhub/dockerhub" }}
     export DOCKER_LOGIN={{ .Data.usr }}
     export DOCKER_PWD={{ .Data.pwd }}
     {{ end }}
@@ -26,3 +26,68 @@ template {
   destination = "vault/dockerhub"
 }
 
+template {
+  contents = <<EOF
+    {{ with secret "gcp/key/nodejs-circleci" }}
+    {{ .Data.private_key_data | base64Decode }}
+    {{ end }}
+  EOF
+  destination = "/tmp/service-account"
+}
+
+template {
+  contents = <<EOF
+    {{ with secret "nodejs-circleci/pipeline/dockerhub/kubernetes" }}
+    {{ .Data.project }}
+    {{ end }}
+  EOF
+  destination = "/tmp/gcp-project"
+}
+
+
+template {
+  contents = <<EOF
+    {{ with secret "nodejs-circleci/pipeline/dockerhub/kubernetes" }}
+    {{ .Data.zone }}
+    {{ end }}
+  EOF
+  destination = "/tmp/kubernetes-cluster-zone"
+}
+
+template {
+  contents = <<EOF
+    {{ with secret "nodejs-circleci/pipeline/dockerhub/kubernetes" }}
+    {{ .Data.cluster }}
+    {{ end }}
+  EOF
+  destination = "/tmp/kubernetes-cluster"
+}
+
+template {
+  contents = <<EOF
+    {{ with secret "nodejs-circleci/pipeline/dockerhub/kubernetes" }}
+    {{ .Data.zone }}
+    {{ end }}
+  EOF
+  destination = "/tmp/kubernetes-cluster-zone"
+}
+
+template {
+  contents = <<EOF
+    {{ with secret "nodejs-circleci/pipeline/dockerhub/kubernetes" }}
+    {{ .Data.email }}
+    {{ end }}
+  EOF
+  destination = "/tmp/kubernetes-email"
+}
+
+template {
+  contents = <<EOF
+    {{ with secret "nodejs-circleci/pipeline/dockerhub/tfc" }}
+    credentials "app.terraform.io" {
+      token = "{{ .Data.token }}"
+    }
+    {{ end }}
+  EOF
+  destination = "/tmp/.terraformrc"
+}
