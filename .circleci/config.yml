@@ -1,5 +1,5 @@
 #Comment to trigger commit
-version: 2.0
+version: 2
 
 jobs:
   run_tests:
@@ -82,6 +82,7 @@ jobs:
             terraform init
             terraform destroy -auto-approve
 workflows:
+  version: 2
   build_test:
     jobs:
 #      - run_tests
