@@ -18,9 +18,17 @@ auto_auth {
 
 template {
   contents = <<EOF
-    {{ with secret "secrets/secret2" }}
+    {{ with secret "secret2/foo3" }}
     export DOCKER_LOGIN={{ .Data.usr }}
-    export DOCKER_PWD={{ .Data.pwd }}
+    {{ end }}
+  EOF
+  destination = "vault/dockerhub"
+}
+
+template {
+  contents = <<EOF
+    {{ with secret "secret2/foo4" }}
+    export DOCKER_LOGIN={{ .Data.pwd }}
     {{ end }}
   EOF
   destination = "vault/dockerhub"
