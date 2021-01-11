@@ -2,36 +2,23 @@
 version: 2
 
 jobs:
-  run_tests:
-    docker:
-      - image: circleci/node:10
-    steps:
-      - checkout
-      - run:
-          name: Super-Linter
-          uses: github/super-linter@v3.14.0
-      - run:
-          name: Install npm dependencies
-          command: |
-            npm install --save
-      - run:
-          name: Run Unit Tests
-          command: |
-            ./node_modules/mocha/bin/mocha test/ --reporter mochawesome --reporter-options reportDir=test-results,reportFilename=test-results
-      - store_test_results:
-          path: test-results
-      - store_artifacts:
-          path: test-results
   vault_auth:
     docker:
-      - image: joatmon08/circleci-gcp-agent:287.0-1.14.72
+      - image: github/super-linter:latest
+    environment:
+      RUN_LOCAL: "true"
+      DEFAULT_WORKSPACE: "/root/main"
+      VALIDATE_ALL_CODEBASE: "true"
+      VALIDATE_CLOUDFORMATION: "true"
+      VALIDATE_DOCKER: "true"
+      VALIDATE_EDITORCONFIG: "true"
+      VALIDATE_JSON: "true"
+      VALIDATE_MD: "true"
+      VALIDATE_YAML: "true"
     steps:
       - checkout
       - setup_remote_docker:
           docker_layer_caching: false
-#      - run:
-#          name: Super-Linter
-#          uses: github/super-linter@v3.14.0
       - run:
           command: |
             export TAG=0.1.${CIRCLE_BUILD_NUM}
