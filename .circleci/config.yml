@@ -30,8 +30,12 @@ jobs:
  #           docker build -t $DOCKER_LOGIN/$IMAGE_NAME -t $DOCKER_LOGIN/$IMAGE_NAME:$TAG .
  #           echo $DOCKER_PWD | docker login -u $DOCKER_LOGIN --password-stdin
  #           docker push $DOCKER_LOGIN/$IMAGE_NAME
+      - run:
+          name: Run Pylint against test Python script files
+          command: |
+            pylint pyfiles/*.py 
       - run: 
-          name: Run Rubocop against Smaple Ruby project source code
+          name: Run Rubocop against test Ruby source code
           command: |
             rubocop app
       - persist_to_workspace:
