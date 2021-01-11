@@ -19,17 +19,21 @@ jobs:
       - checkout
       - setup_remote_docker:
           docker_layer_caching: false
-      - run:
+ #     - run:
+ #         command: |
+ #           export TAG=0.1.${CIRCLE_BUILD_NUM}
+ #           export IMAGE_NAME=$CIRCLE_PROJECT_REPONAME
+ #           echo $VAULT_ROLE_ID > vault/role-id
+ #           echo $VAULT_SECRET_ID	> vault/secret-id
+ #           DOCKER_LOGIN=$(vault kv get -field=usr secret2/foo3)
+ #           DOCKER_PWD=$(vault kv get -field=pwd secret2/foo4)
+ #           docker build -t $DOCKER_LOGIN/$IMAGE_NAME -t $DOCKER_LOGIN/$IMAGE_NAME:$TAG .
+ #           echo $DOCKER_PWD | docker login -u $DOCKER_LOGIN --password-stdin
+ #           docker push $DOCKER_LOGIN/$IMAGE_NAME
+      - run: 
+          name: Run Rubocop against Smaple Ruby project source code
           command: |
-            export TAG=0.1.${CIRCLE_BUILD_NUM}
-            export IMAGE_NAME=$CIRCLE_PROJECT_REPONAME
-            echo $VAULT_ROLE_ID > vault/role-id
-            echo $VAULT_SECRET_ID	> vault/secret-id
-            DOCKER_LOGIN=$(vault kv get -field=usr secret2/foo3)
-            DOCKER_PWD=$(vault kv get -field=pwd secret2/foo4)
-            docker build -t $DOCKER_LOGIN/$IMAGE_NAME -t $DOCKER_LOGIN/$IMAGE_NAME:$TAG .
-            echo $DOCKER_PWD | docker login -u $DOCKER_LOGIN --password-stdin
-            docker push $DOCKER_LOGIN/$IMAGE_NAME
+            rubocop app
       - persist_to_workspace:
           root: /tmp
           paths:
